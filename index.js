@@ -19,6 +19,8 @@ app.use(express.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const getData = require('./functions/data.function')
+
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
@@ -34,6 +36,17 @@ require("./routes/index.routes")(app);
 
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to Scheduling application." });
+});
+
+const job = nodeCron.schedule('0 * * * *', () => {
+	console.log('Running hourly data fetch');
+	console.log(new Date().toLocaleString());
+	getData();
+});
+
+app.get('/get-data', (req, res) => {
+	getData();
+	res.send({ message: 'Started data pull' });
 });
 
 // Listen on PORT
