@@ -7,6 +7,8 @@ const helmet = require("helmet");
 
 const bodyParser = require("body-parser");
 
+const cron = require("node-cron")
+
 dotenv.config();
 
 global.root_dir = __dirname;
@@ -19,7 +21,7 @@ app.use(express.json());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const getData = require('./functions/data.function')
+const getData = require("./functions/data.function");
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
@@ -38,16 +40,18 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to Scheduling application." });
 });
 
-const job = nodeCron.schedule('0 * * * *', () => {
-	console.log('Running hourly data fetch');
-	console.log(new Date().toLocaleString());
-	getData();
+const job = cron.schedule("0 * * * *", () => {
+  console.log("Running hourly data fetch");
+  console.log(new Date().toLocaleString());
+  getData();
 });
 
-app.get('/get-data', (req, res) => {
-	getData();
-	res.send({ message: 'Started data pull' });
+app.get("/get-data", (req, res) => {
+  getData();
+  res.send({ message: "Started data pull" });
 });
+
+require("./routes/index.routes")(app);
 
 // Listen on PORT
 const PORT = process.env.PORT || 8080;

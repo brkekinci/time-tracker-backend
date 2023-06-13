@@ -1,4 +1,4 @@
-export const getData = async () => {
+exports.getData = async () => {
   const today = new Date().toISOString().split("T")[0];
   // const start_date = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]; // 30 Days ago
   console.log("Pulling Data ", new Date().toISOString());

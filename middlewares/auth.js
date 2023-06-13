@@ -1,16 +1,17 @@
 const bcrypt = require("bcrypt");
 
-export const verifyToken = (req, res, next) => {
-  //   bcrypt.genSalt(10, (err, salt) => {
-  //     bcrypt.hash(process.env.AUTH_TOKEN, salt, (err: any, hash: any) => {
-  //       if (err) {
-  //         console.log(err);
-  //       }
-  //       console.log("hash");
+exports.verifyToken = (req, res, next) => {
+  // bcrypt.genSalt(10, (err, salt) => {
+  //   bcrypt.hash(process.env.AUTH_TOKEN, salt, (err, hash) => {
+  //     if (err) {
+  //       console.log(err);
+  //     }
+  //     console.log("hash");
 
-  //       console.log(hash);
-  //     });
+  //     console.log(hash);
   //   });
+  // });
+  
   const bearerHeader = req.headers["authorization"];
   if (typeof bearerHeader !== "undefined") {
     const bearer = bearerHeader.split(" ");
