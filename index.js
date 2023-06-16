@@ -9,6 +9,10 @@ const bodyParser = require("body-parser");
 
 const cron = require("node-cron")
 
+const cors = require("cors")
+
+const db = require('./models');
+
 dotenv.config();
 
 global.root_dir = __dirname;
@@ -19,6 +23,8 @@ app.use(helmet());
 
 app.use(express.json());
 
+app.use(cors())
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const getData = require("./functions/data.function");
@@ -26,6 +32,19 @@ const getData = require("./functions/data.function");
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
+
+db.sequelize
+	.sync({
+		// force: true,
+		alter: { drop: false },
+	})
+	.then(async () => {
+		console.log(`✔ ${process.env.DATABASE_NAME} Database synced.`);
+	})
+	.catch((err) => {
+		logger.error('Sync error: ');
+		logger.error(err);
+	});
 
 app.use(
   express.json({

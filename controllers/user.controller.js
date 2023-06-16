@@ -80,7 +80,7 @@ exports.delete = (req, res) => {
 	const id = req.params.id;
 
 	USER.destroy({
-		where: { id: id },
+		where: { user_id: id },
 	})
 		.then((num) => {
 			if (num == 1) {
